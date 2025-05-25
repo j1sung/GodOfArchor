@@ -1,0 +1,3 @@
+Hello!
+This is a resource pack with bows and arrows. It consists of six bows, several arrows and quivers,
+ and several arrows. It uses the PBR process and has some animations*6

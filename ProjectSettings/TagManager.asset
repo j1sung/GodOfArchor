@@ -7,6 +7,12 @@ TagManager:
   - Shadow
   - Collide
   - Arrow
+  - ArrowContainer
+  - Projectile
+  - Head
+  - Arm
+  - Body
+  - Leg
   layers:
   - Default
   - TransparentFX

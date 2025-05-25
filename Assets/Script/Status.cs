@@ -48,6 +48,7 @@ public class Status : MonoBehaviour
         currentStamina = maxStamina;
     }
 
+    /*
     public void ReduceHp(float damage)
     {
         currentHp -= damage;
@@ -60,6 +61,7 @@ public class Status : MonoBehaviour
             OnDeath?.Invoke(); // 사망 이벤트 호출
         }
     }
+    */
 
     public void UseStamina(float amountPerSecond) // 스테미나 소모
     {

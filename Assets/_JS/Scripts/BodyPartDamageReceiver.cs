@@ -21,7 +21,7 @@ public class BodyPartDamageReceiver : MonoBehaviour
             
             float totalDamage = arrow.BaseDamage * hitVelocity * damageMultiplier;
             Debug.Log(totalDamage + "¸Â¾Ò´Ù!");
-            playerStat.ReduceHp(totalDamage);
+            //playerStat.ReduceHp(totalDamage);
         }
         
     }

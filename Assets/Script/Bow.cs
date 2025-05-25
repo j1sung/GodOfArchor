@@ -36,6 +36,11 @@ public class Bow : MonoBehaviour
         cam = Camera.main;
     }
 
+    private void Update()
+    {
+       // Input.GetAxisRaw("Attack"), status.CurrentStamina);
+    }
+    
     public void StartBowAction(float bowpower, float stamina)
     {
         currentStamina = stamina;

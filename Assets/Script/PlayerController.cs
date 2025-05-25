@@ -27,8 +27,10 @@ public class PlayerController : MonoBehaviour
     private MovementCharacterController _movementCharacterController;
     private PlayerAnimatorController animator;
     private AudioSource audioSource;
-    private Bow bow;
+    //private Bow bow;
     private bool onBow = false;
+
+    bool running; // 달리는가?
 
 
     private void Awake()
@@ -45,24 +47,24 @@ public class PlayerController : MonoBehaviour
 
         animator = GetComponent<PlayerAnimatorController>();    
         audioSource = GetComponent<AudioSource>();
-        bow = GetComponentInChildren<Bow>();
+        //bow = GetComponentInChildren<Bow>();
     } 
 
     // Update is called once per frame
     void Update()
     {
-        bool running = UpdateMove(); 
-        bool holding = UpdateBowAction();
+        running = UpdateMove(); 
+        //bool holding = UpdateBowAction();
         UpdateRotate();
         UpdateJump();
 
-        if (!running && !holding) // 기력 충전 가능 여부
+        if (!running) // 기력 충전 가능 여부 && !holding
         {
             status.RecoverStamina();
         }
         if(status.CurrentHp == 0)
         {
-            status.ReduceHp(0f);
+            //status.ReduceHp(0f);
         }
     }
 
@@ -76,11 +78,11 @@ public class PlayerController : MonoBehaviour
 
     private bool UpdateMove()
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
         // 달리기 조건: 앞으로 이동 중이고 Run 키 누름
-        bool isTryingToRun = z > 0 && Input.GetAxisRaw("Run") == 1;
+        bool isTryingToRun = z > 0 && Input.GetKey(KeyCode.LeftShift);
 
         // 현재 스태미나가 달릴 수 있을 만큼 남아 있는가?
         bool hasStamina = status.CurrentStamina > 0f;
@@ -133,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
     private bool UpdateBowAction()
     {
-        bow.StartBowAction(Input.GetAxisRaw("Attack"), status.CurrentStamina);
+        
 
         if (animator.BowState > 0.5f)
         {

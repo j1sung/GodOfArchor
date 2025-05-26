@@ -5,11 +5,11 @@ using UnityEngine;
 public class BodyPartDamageReceiver : MonoBehaviour
 {
     [SerializeField] private float damageMultiplier = 1.0f; // 부위별 계수 설정 (예: 머리 2.0, 팔 0.5 등)
-    private Status playerStat;
+    private PlayerStatus playerStat;
 
     void Awake()
     {
-        playerStat = GetComponent<Status>();
+        playerStat = GetComponent<PlayerStatus>();
     }
 
     private void OnTriggerEnter(Collider other)

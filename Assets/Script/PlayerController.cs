@@ -8,13 +8,13 @@ public class PlayerController : MonoBehaviour
     [Tooltip("플레이어가 달릴 수 있는 최대 시간 (초 단위)")]
     [SerializeField] 
     private float runDuration = 7f;
-    [Tooltip("활을 당길 수 있는 최대 시간 (초 단위)")]
-    [SerializeField] 
-    private float drawDuration = 5f;
+    //[Tooltip("활을 당길 수 있는 최대 시간 (초 단위)")]
+    //[SerializeField] 
+    //private float drawDuration = 5f;
 
-    private Status status;
-    private float runCost => status.MaxStamina / runDuration;
-    private float drawCost => status.MaxStamina / drawDuration;
+    private PlayerStatus status;
+    private float runCost => status.MaxStamina / runDuration; // 달리기 소모 코스트
+    //private float drawCost => status.MaxStamina / drawDuration;
 
     [Header("Audio Clips")]
     [SerializeField]
@@ -22,15 +22,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] 
     private AudioClip audioClipRun;
 
-
     private RotateCamera _rotateCamera;
     private MovementCharacterController _movementCharacterController;
     private PlayerAnimatorController animator;
     private AudioSource audioSource;
-    //private Bow bow;
-    private bool onBow = false;
-
-    bool running; // 달리는가?
+    
+    bool running = false; // 달리는가?
+    bool attacking = false; // 공격중인가?
 
 
     private void Awake()
@@ -42,29 +40,27 @@ public class PlayerController : MonoBehaviour
         _rotateCamera = GetComponent<RotateCamera>();
         _movementCharacterController = GetComponent<MovementCharacterController>();
 
-        status = GetComponent<Status>();
+        status = GetComponent<PlayerStatus>();
         status.OnDeath += Die; // 사망 이벤트 구독
 
         animator = GetComponent<PlayerAnimatorController>();    
         audioSource = GetComponent<AudioSource>();
-        //bow = GetComponentInChildren<Bow>();
     } 
 
-    // Update is called once per frame
     void Update()
     {
         running = UpdateMove(); 
-        //bool holding = UpdateBowAction();
+        attacking = UpdateAttack();
         UpdateRotate();
         UpdateJump();
 
-        if (!running) // 기력 충전 가능 여부 && !holding
+        if (!running && !attacking) // 달리거나 공격중엔 스테미나 회복 안됨!
         {
             status.RecoverStamina();
         }
-        if(status.CurrentHp == 0)
+        if(status.CurrentHp == 0) // HP가 0이면 죽음 & 위치 리스폰
         {
-            //status.ReduceHp(0f);
+            Die();
         }
     }
 
@@ -82,7 +78,7 @@ public class PlayerController : MonoBehaviour
         float z = Input.GetAxis("Vertical");
 
         // 달리기 조건: 앞으로 이동 중이고 Run 키 누름
-        bool isTryingToRun = z > 0 && Input.GetKey(KeyCode.LeftShift);
+        bool isTryingToRun = z > 0 && Input.GetButton("Run");
 
         // 현재 스태미나가 달릴 수 있을 만큼 남아 있는가?
         bool hasStamina = status.CurrentStamina > 0f;
@@ -133,13 +129,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool UpdateBowAction()
+    private bool UpdateAttack()
     {
         
 
         if (animator.BowState > 0.5f)
         {
-            status.UseStamina(drawCost);
+            //status.UseStamina(drawCost);
             return true; // 기력 회복 불가
         }
         return false; // 기력 회복 가능(animator.BowState <= 0.5f)
@@ -147,8 +143,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("플레이어 사망1");
-        GameManager_JS.instance.RespawnPlayer(this.gameObject);
+        Debug.Log("플레이어 사망");
     }
 
     private void OnDestroy()

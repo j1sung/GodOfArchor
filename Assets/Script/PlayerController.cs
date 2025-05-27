@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetButtonDown("Jump"))
         {
             _movementCharacterController.Jump();
+            animator.TriggerJump();
         }
     }
 

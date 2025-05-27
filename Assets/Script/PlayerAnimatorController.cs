@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimatorController : MonoBehaviour
 {
-    private Animator animator;
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
+    [SerializeField] private Animator animator;
 
     public float MoveSpeed
     {
@@ -23,12 +18,12 @@ public class PlayerAnimatorController : MonoBehaviour
         get => animator.GetFloat("BowState");
     }
 
-    public void triggerRelease()
+    public void TriggerJump()
     {
-        animator.SetTrigger("Release");
+        animator.SetTrigger("Jump");
     }
 
-    public void triggerShoot() 
+    public void TriggerShoot() 
     {
         animator.SetTrigger("Shoot");
     }

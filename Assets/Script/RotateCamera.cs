@@ -19,10 +19,14 @@ public class RotateCamera : MonoBehaviour
         eulerAngleY += X * rotCamXAxisSpeed;    //좌/우 이동으로 카메라 y축 회전
         eulerAngleX -= Y * rotCamYAxisSpeed;    //위/아래 이동으로 카메라 x축 회전
 
-        //카메라 x축 회전의 경우 회전 범위를 설정
+        // 카메라 x축 회전의 경우 회전 범위를 설정
         eulerAngleX = ClampAngle(eulerAngleX, limitMinX, limitMaxX);
 
-        transform.rotation = Quaternion.Euler(eulerAngleX, eulerAngleY, 0);
+        // 캐릭터 전체 회전(좌우 Y축만 적용)
+        transform.rotation = Quaternion.Euler(0, eulerAngleY, 0);
+
+        // 카메라 위아래 (pitch)
+
     }
 
     private float ClampAngle(float angle, float min, float max)
